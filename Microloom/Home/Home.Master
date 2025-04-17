@@ -1,0 +1,137 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Home.master.cs" Inherits="MicroLoom.Home.Home" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/Bootstrap/bootstrap.min.css" rel="stylesheet">
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style>
+        .navbar-brand {
+            font-size: x-large;
+        }
+
+        nav {
+            font-size: x-large;
+        }
+
+        .btn:hover {
+            background-color: #0e4db0 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        <nav class="navbar navbar-expand-lg sticky-top" style="background-color: rgb(24, 24, 24);">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#" style="color: White;">
+                    <img src="/Logos/logo.png" height="55" width="55" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse"></div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item" href="#">
+                            <a class="nav-link" aria-current="page" href="/Home/Home.aspx">
+                                <img src="/Logos/Home.png" height="40"
+                                    width="40">&nbsp &nbsp</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/NewPost.aspx">
+                                <img src="/Logos/Post.png" height="40" width="40">&nbsp &nbsp</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/DM/Message.aspx">
+                                <img src="/Logos/Messages.png" height="40" width="40">&nbsp &nbsp</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/Notifications.aspx">
+                                <img src="/Logos/notif.png" height="40" width="40">&nbsp &nbsp</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <img src="/Logos/Profile.png" height="40" width="40">&nbsp &nbsp</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/Profile/MyProfile.aspx">View Your Profile</a></li>
+                                <li><a class="dropdown-item" href="/Profile/EditProfile.aspx">Edit Profile Details</a></li>
+                                <li><a class="dropdown-item" href="#" runat="server" onserverclick="Log_out_ServerClick">Log-out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div>
+                    </div>
+                    <asp:UpdatePanel ID="search_panel" runat="server">
+                        <ContentTemplate>
+                            <div class="d-flex" role="search">
+                                <asp:TextBox ID="txt_search" runat="server" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" Visible="false"></asp:TextBox>
+                                <asp:Button ID="btn_search" runat="server" Text="Search" class="btn" BorderColor="Black" BorderStyle="Solid" BackColor="#0066FF" ForeColor="White" Visible="false" OnClick="btn_search_Click" />
+                                <asp:ImageButton ID="btn_magnify" runat="server" ImageUrl="/Logos/search.png" OnClick="btn_magnify_Click" Height="40" Width="40" />
+                            </div>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                </div>
+            </div>
+        </nav>
+        <div>
+            <div class="content" runat="server">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </div>
+    </form>
+    <script src="/Bootstrap/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let navLinks = document.querySelectorAll(".nav-link"); // Select all navbar links
+            let currentPage = window.location.pathname.toLowerCase(); // Get current page URL
+
+            // Loop through all nav links
+            navLinks.forEach(link => {
+                let linkHref = link.getAttribute("href");
+
+                if (linkHref) {
+                    linkHref = linkHref.toLowerCase(); // Convert href to lowercase for comparison
+
+                    // Check if the current page matches the link's href
+                    if (currentPage === linkHref || currentPage.includes(linkHref)) {
+                        link.classList.add("active"); // Add active class
+                        let img = link.querySelector("img"); // Get the image inside the link
+                        if (img) {
+                            img.style.border = "2px solid white"; // Highlight icon with white border
+                            img.style.borderRadius = "10px"; // Rounded corners
+                            img.style.padding = "2px"; // Small padding inside the border
+                        }
+                    }
+                }
+            });
+
+            // Special case: Highlight Profile icon if the page belongs to /Profile/
+            if (currentPage.includes("/profile/")) {
+                let profileLink = document.querySelector(".nav-link[href='#'] img[src='/Logos/Profile.png']");
+                if (profileLink) {
+                    profileLink.style.border = "2px solid white"; // Highlight Profile icon
+                    profileLink.style.borderRadius = "10px"; // Rounded corners
+                    profileLink.style.padding = "2px"; // Small padding
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
+
